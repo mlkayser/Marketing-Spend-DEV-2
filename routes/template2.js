@@ -1,9 +1,6 @@
 'use strict';
 
-
-
 var totalClubs;
-
 
 //Imports
 var constants = require('../constants');
@@ -33,21 +30,7 @@ router.post('/', function(req, res) {
     
     console.log('CORS Okay');
     
-    // This is the Request:
-    // {
-    //     ownershipGroupNumber: 123,
-    //     clubs: [
-    //         {clubId: 'PF Club Id 1', clubName: 'PF CLUB NAME 1'},
-    //         {clubId: 'PF Club Id 2', clubName: 'PF CLUB NAME 2'},
-    //         {clubId: 'PF Club Id 3', clubName: 'PF CLUB NAME 3'},
-    //         {clubId: 'PF Club Id 4', clubName: 'PF CLUB NAME 4'},
-    //         {clubId: 'PF Club Id 5', clubName: 'PF CLUB NAME 5'},
-    //         {clubId: 'PF Club Id 6', clubName: 'PF CLUB NAME 6'}
-    //     ]
-    // };
-    
     var input = req.body;
-    
     console.log(input);
     
     totalClubs = req.body.clubs.length;
@@ -56,15 +39,10 @@ router.post('/', function(req, res) {
     var wb = newWorkbook();
     constructColumns(wb, WORKSHEET_NAME, input.clubs);
     addRows(wb, WORKSHEET_NAME, SPEND_CATEGORIES, input.clubs);
-    addFormat(wb, WORKSHEET_NAME);
+    addFormat(wb, WORKSHEET_NAME);   
     
-    
-    
-    
-    
-    var fn = './uploads/' + input.ownershipGroupNumber + '-template-' + new Date().toISOString().substr(0,10) + '.xlsx';
-    
-    
+    var fn = './uploads/' + input.ownershipGroupNumber + '-template-TEST-' + new Date().toISOString().substr(0,10) + '.xlsx';
+        
     wb.xlsx.writeFile(fn)
         .then(function() {
             // Download the file that was produced on the App Server
@@ -72,10 +50,8 @@ router.post('/', function(req, res) {
         })
         .catch(function(err) {
             console.log(err);
-        });
-    
+        });    
 });
-
 
 //Everything Below here is in support of the above:
 
@@ -117,17 +93,13 @@ function constructColumns(workbook, sheetName, clubs){
 }
 
 function addRows(workbook, sheetName, categories, clubs){
-    var sheet = workbook.getWorksheet(sheetName);
-    
-    
-    
+    var sheet = workbook.getWorksheet(sheetName); 
     var nameRow = {tactic: 'Tactic'};
     
     for (var h = 0; h < totalClubs; h++){
         nameRow[clubs[h].clubId] = clubs[h].clubId;
     }
-    
-    
+        
     sheet.addRow(nameRow);
     
     for(var i = 0; i < categories.length; i++){
@@ -140,9 +112,7 @@ function addRows(workbook, sheetName, categories, clubs){
     
         sheet.addRow(newRow);
     }
-    
-    
-    
+        
     var totalRow = {};
     totalRow.tactic = 'Total';
     var columnLetter = 'A';
@@ -169,7 +139,6 @@ function addRows(workbook, sheetName, categories, clubs){
     }
     sheet.addRow(promo);
 }
-
 
 function addFormat(workbook, sheetName){
     var sheet = workbook.getWorksheet(sheetName);
