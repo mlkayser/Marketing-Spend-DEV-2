@@ -20,17 +20,6 @@ router.post('/', function(req, res) {
     
     console.log('step 1');
     
-    // var input = {
-        // ownershipGroupNumber: 123,
-        // clubs: [
-            // {clubId: 'PF Club Id 1'},
-            // {clubId: 'PF Club Id 2'},
-            // {clubId: 'PF Club Id 3'},
-            // {clubId: 'PF Club Id 4'},
-            // {clubId: 'PF Club Id 5'},
-            // {clubId: 'PF Club Id 6'}
-        // ]
-    // };
     var input = req.body;
 
     // excel parser
@@ -145,7 +134,7 @@ function createExcelTemplate(input) {
 
     ws['!cols'] = wscols;
 
-    var fn = './uploads/' + input.ownershipGroupNumber + '-template-' + new Date().toISOString().substr(0,10) + '.xlsx';
+    var fn = './uploads/' + input.ownershipGroupNumber + '-template-TEST1- + new Date().toISOString().substr(0,10) + '.xlsx';
     var wb = { SheetNames:['DMA'], Sheets:{}};
     wb.Sheets.DMA = ws;
     
